@@ -3,8 +3,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class Wall implements Structure {
-    private List<Block> blocks;
-
+    private final List<Block> blocks;
 
     public Wall(List<Block> blocks) {
         this.blocks = blocks;
@@ -12,20 +11,17 @@ public class Wall implements Structure {
 
     @Override
     public Optional<Block> findBlockByColor(String color) {
-        return getBlock(blocks, color);
+        return findColorInCompositeBlock(blocks, color);
     }
 
-    private Optional<Block> getBlock(List<Block> block1, String color) {
+    private Optional<Block> findColorInCompositeBlock(List<Block> blockList, String color) {
         Optional<Block> result = Optional.empty();
-        for (Block block : block1) {
+        for (Block block : blockList) {
             if (block.color().equals(color)) {
                 return Optional.of(block);
             }
             if (block instanceof CompositeBlock) {
-                if (block.color().equals(color)) return Optional.of(block);
-                else {
-                    result = getBlock(((CompositeBlock) block).blocks(), color);
-                }
+                    result = findColorInCompositeBlock(((CompositeBlock) block).blocks(), color);
             }
         }
         return result;
@@ -35,31 +31,27 @@ public class Wall implements Structure {
     @Override
     public List<Block> findBlocksByMaterial(String material) {
         List<Block> list = new ArrayList<>();
-        return getMaterial(blocks, material, list);
+        return collectBlockByMaterial(blocks, material, list);
     }
 
 
-    private List<Block> getMaterial(List<Block> blocks, String material, List<Block> list) {
-
+    private List<Block> collectBlockByMaterial(List<Block> blocks, String material, List<Block> collectedList) {
 
         for (Block block : blocks) {
             if (block instanceof CompositeBlock) {
-                getMaterial(((CompositeBlock) block).blocks(), material, list);
+                collectBlockByMaterial(((CompositeBlock) block).blocks(), material, collectedList);
             }
             if (block.material().equals(material)) {
-                list.add(block);
+                collectedList.add(block);
             }
-
         }
-        return list;
+        return collectedList;
     }
 
     @Override
     public int count() {
         int totalCount = 0;
-        totalCount = getTotalCount(blocks, totalCount);
-
-        return totalCount;
+        return getTotalCount(blocks, totalCount);
     }
 
     private int getTotalCount(List<Block> blocks, int totalCount) {
