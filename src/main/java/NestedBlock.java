@@ -1,11 +1,11 @@
 import java.util.List;
 
-public class HarderBlock implements CompositeBlock {
-    private String color;
-    private String material;
-    private List<Block> blocks;
+public class NestedBlock implements CompositeBlock {
+    private final String color;
+    private final String material;
+    private final List<Block> blocks;
 
-    public HarderBlock(String color, String material, List<Block> blocks) {
+    public NestedBlock(String color, String material, List<Block> blocks) {
         this.color = color;
         this.material = material;
         this.blocks = blocks;
@@ -26,10 +26,4 @@ public class HarderBlock implements CompositeBlock {
         return blocks;
     }
 
-    @Override
-    public String toString() {
-        return "HarderBlock{" +
-                ", material='" + material +
-                '}';
-    }
 }
