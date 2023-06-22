@@ -25,4 +25,11 @@ public class HarderBlock implements CompositeBlock {
     public List<Block> blocks() {
         return blocks;
     }
+
+    @Override
+    public String toString() {
+        return "HarderBlock{" +
+                ", material='" + material +
+                '}';
+    }
 }
